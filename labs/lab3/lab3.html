@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3</title>
+    <link rel="stylesheet" href="lab3.css" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <input id="cityInput" type="text" placeholder="Enter city">
+        <button id="searchBtn">Search</button><br>
+        <button id="locationBtn">Use My Location</button>
+
+        <div class="weather">
+            <h2 id="city">—</h2>
+            <img id="icon" alt="">
+            <h3 id="temp">— °F</h3>
+            <p id="desc">—</p>
+            <div class="details" id="details"></div>
+            <p class="error" id="error"></p>
+        </div>
+    </div>
+
+    <script src="lab3api.js"></script>
+</body>
+</html>
