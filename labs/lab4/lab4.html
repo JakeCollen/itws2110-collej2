@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Local Weather</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: brightness(0.75);
+    }
+
+    .weather-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 40px 35px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #f0f0f0;
+  transition: box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.weather-box:hover {
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  letter-spacing: 1.2px;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.temp {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0 0 15px 0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.description {
+  font-style: italic;
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  font-size: 1.1rem;
+}
+
+.info .label {
+  font-weight: 700;
+  color: #ddd;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center; /* vertically center emoji + text */
+  gap: 6px; /* space between emoji and text */
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+
+.info .value {
+  text-align: right;
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+  </style>
+</head>
+<body>
+  <div class="weather-box" id="weather">
+    <h1 id="location">Fetching location...</h1>
+    <p class="description" id="description"></p>
+    <p class="temp" id="temp">Loading weather...</p>
+    
+    <div class="info">
+      <div class="label">🤒 Feels Like</div><div class="value" id="feels_like"></div>
+      <div class="label">📉 Min Temp</div><div class="value" id="temp_min"></div>
+      <div class="label">📈 Max Temp</div><div class="value" id="temp_max"></div>
+      <div class="label">💧 Humidity</div><div class="value" id="humidity"></div>
+      <div class="label">📏 Pressure</div><div class="value" id="pressure"></div>
+      <div class="label">👀 Visibility</div><div class="value" id="visibility"></div>
+      <div class="label">☁️ Clouds</div><div class="value" id="clouds"></div>
+      <div class="label">💨 Wind</div><div class="value" id="wind"></div>
+      <div class="label">🌅 Sunrise</div><div class="value" id="sunrise"></div>
+      <div class="label">🌇 Sunset</div><div class="value" id="sunset"></div>
+    </div>
+  </div>
+
+  <script>
+    const weatherApiKey = "00bf2ed667e73b694661859f30d1b7e2";
+    const unsplashApiKey = "uT-vxVSaNa4CblrsomocfSdp5FXnDZREfP7h7atUgUI";
+
+    function capitalize(text) {
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function toLocalTime(unixUtc) {
+      const date = new Date(unixUtc * 1000);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function getWindDirection(deg) {
+      const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+      return directions[Math.round(deg / 45) % 8];
+    }
+
+    async function fetchWeather(lat, lon) {
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=imperial`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Weather fetch failed");
+        const data = await res.json();
+
+        const {
+          name,
+          main: { temp, feels_like, temp_min, temp_max, humidity, pressure },
+          weather,
+          wind,
+          clouds,
+          visibility,
+          sys: { sunrise, sunset },
+        } = data;
+
+        const description = weather[0].description;
+
+        // Main display
+        document.getElementById("location").textContent = `Weather in ${name}`;
+        document.getElementById("description").textContent = capitalize(description);
+        document.getElementById("temp").textContent = `${temp.toFixed(1)}°F`;
+
+        // Convert pressure to inHg
+        const pressureInHg = (pressure * 0.02953).toFixed(2);
+
+        // Additional info
+        document.getElementById("feels_like").textContent = `${feels_like.toFixed(1)}°F`;
+        document.getElementById("temp_min").textContent = `${temp_min.toFixed(1)}°F`;
+        document.getElementById("temp_max").textContent = `${temp_max.toFixed(1)}°F`;
+        document.getElementById("humidity").textContent = `${Math.round(humidity)}%`;
+        document.getElementById("pressure").textContent = `${pressureInHg} inHg`;
+        document.getElementById("visibility").textContent = `${(visibility / 1000).toFixed(1)} km`;
+        document.getElementById("clouds").textContent = `${Math.round(clouds.all)}%`;
+        document.getElementById("wind").textContent = `${Math.round(wind.speed)} mph, ${getWindDirection(wind.deg)}`;
+        document.getElementById("sunrise").textContent = toLocalTime(sunrise);
+        document.getElementById("sunset").textContent = toLocalTime(sunset);
+
+        fetchBackgroundImage(description);
+      } catch (err) {
+        console.error("Weather error:", err);
+        document.getElementById("location").textContent = "Unable to fetch weather data.";
+        document.getElementById("temp").textContent = "";
+      }
+    }
+
+    async function fetchBackgroundImage(queryText) {
+  const query = encodeURIComponent(queryText + " weather sky");
+  const url = `https://api.unsplash.com/search/photos?query=${query}&orientation=landscape&per_page=1&client_id=${unsplashApiKey}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Image fetch failed");
+    const data = await res.json();
+
+    if (data.results && data.results.length > 0) {
+      // Use the first image's regular URL
+      document.body.style.backgroundImage = `url(${data.results[0].urls.regular})`;
+    } else {
+      // No results fallback
+      document.body.style.background = "#444";
+    }
+  } catch (err) {
+    console.warn("Image load failed. Fallback used.");
+    document.body.style.background = "#444";
+  }
+}
+
+
+    function getLocationAndFetchWeather() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            fetchWeather(latitude, longitude);
+          },
+          (error) => {
+            console.error("Geolocation error:", error.message);
+            document.getElementById("location").textContent = "Location access denied.";
+          }
+        );
+      } else {
+        document.getElementById("location").textContent = "Geolocation not supported.";
+      }
+    }
+
+    getLocationAndFetchWeather();
+  </script>
+</body>
+</html>
