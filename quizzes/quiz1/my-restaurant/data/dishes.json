@@ -1,0 +1,75 @@
+{
+  "dishes": [
+    {
+      "name": "Beef Wellington",
+      "description": "A classic British dish made with tender beef filet coated in mushrooms, wrapped in prosciutto ham and then puff pastry, before being baked to perfection.",
+      "category": "Non-Vegetarian",
+      "cuisine": "British",
+      "image": "https://cdn.britannica.com/11/234011-050-7D35FB60/beef-wellington.jpg",
+      "ingredients": [
+        "Filet mignon",
+        "olive oil",
+        "black pepper",
+        "dijon mustard",
+        "mushrooms",
+        "garlic",
+        "prosciutto ham",
+        "puff pastry",
+        "egg yolk",
+        "kosher salt"
+      ],
+      "price": 60
+    },
+    {
+      "name": "Rotisserie Chicken",
+      "description": "Juicy, slow-roasted chicken cooked evenly on a rotisserie spit, seasoned with herbs and spices for a crispy golden skin.",
+      "category": "Non-Vegetarian",
+      "cuisine": "European",
+      "image": "https://i2.wp.com/thesuburbansoapbox.com/wp-content/uploads/2017/03/Rotisserie-Chicken-12.jpg",
+      "ingredients": [
+        "Whole chicken",
+        "olive oil",
+        "garlic",
+        "paprika",
+        "salt",
+        "black pepper"
+      ],
+      "price": 17
+    },
+    {
+      "name": "Baby Back Ribs",
+      "description": "Tender pork ribs slow-cooked until the meat falls off the bone.",
+      "category": "Non-Vegetarian",
+      "cuisine": "American",
+      "image": "https://www.oklahomajoes.com.au/Images/Recipes/Main/smoked-baby-back-ribs.jpg",
+      "ingredients": [
+        "Pork ribs",
+        "dry rub",
+        "brown sugar",
+        "garlic powder",
+        "onion powder",
+        "paprika",
+        "salt",
+        "black pepper"
+      ],
+      "price": 21
+    },
+    {
+      "name": "Venison Tenderloin",
+      "description": "Lean and flavorful venison tenderloin seared to perfection and served with a red wine sauce.",
+      "category": "Non-Vegetarian",
+      "cuisine": "European",
+      "image": "https://www.castironskilletcooking.com/wp-content/uploads/2023/02/Venison-Tenderloin-11.jpg",
+      "ingredients": [
+        "Venison tenderloin",
+        "olive oil",
+        "red wine",
+        "garlic",
+        "butter",
+        "salt",
+        "black pepper"
+      ],
+      "price": 39
+    }
+  ]
+}
