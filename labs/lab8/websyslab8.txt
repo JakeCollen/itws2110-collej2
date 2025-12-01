@@ -1,0 +1,155 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Dec 01, 2025 at 05:56 PM
+-- Server version: 9.5.0
+-- PHP Version: 8.4.14
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `websyslab8`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `courses`
+--
+
+CREATE TABLE `courses` (
+  `crn` int NOT NULL,
+  `prefix` varchar(4) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `number` smallint NOT NULL,
+  `title` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `section` tinyint UNSIGNED NOT NULL,
+  `year` smallint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Dumping data for table `courses`
+--
+
+INSERT INTO `courses` (`crn`, `prefix`, `number`, `title`, `section`, `year`) VALUES
+(73048, 'ITWS', 2110, 'Web Systems Development', 1, 2025),
+(73131, 'CSCI', 2200, 'Foundations of Computer Science', 1, 2025),
+(75254, 'STSO', 1100, 'Science, Tech, & Society', 2, 2025),
+(75418, 'CSCI', 2800, 'Computer Architecture and Operating Systems', 2, 2025);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grades`
+--
+
+CREATE TABLE `grades` (
+  `id` int NOT NULL,
+  `crn` int DEFAULT NULL,
+  `rin` int DEFAULT NULL,
+  `grade` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Dumping data for table `grades`
+--
+
+INSERT INTO `grades` (`id`, `crn`, `rin`, `grade`) VALUES
+(21, 73048, 662089080, 99),
+(22, 73131, 662089080, 79),
+(23, 75418, 662089080, 89),
+(24, 73048, 100000001, 88),
+(25, 73131, 100000001, 87),
+(26, 75418, 100000001, 91),
+(27, 73048, 100000002, 92),
+(28, 75254, 100000002, 93),
+(29, 73048, 100000003, 85),
+(30, 75254, 100000003, 89);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `students`
+--
+
+CREATE TABLE `students` (
+  `rin` int NOT NULL,
+  `rcsID` char(7) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `first_name` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `last_name` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `alias` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `phone` bigint DEFAULT NULL,
+  `street` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `city` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `state` char(2) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `zip` char(10) COLLATE utf8mb3_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`rin`, `rcsID`, `first_name`, `last_name`, `alias`, `phone`, `street`, `city`, `state`, `zip`) VALUES
+(100000001, 'johnsb5', 'Bob', 'Johnson', 'Bobby', 5167430967, '110 8th Street', 'Troy', 'NY', '12180'),
+(100000002, 'willic7', 'Charlie', 'Williams', 'Chuck', 3489592734, '110 8th Street', 'Troy', 'NY', '12180'),
+(100000003, 'brownd9', 'Diana', 'Brown', 'Di', 5830129342, '110 8th Street', 'Troy', 'NY', '12180'),
+(662089080, 'collej2', 'Jake', 'Collen', 'Jake', 5188059384, '211 Foster Rd', 'Cropseyville', 'NY', '12052');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `courses`
+--
+ALTER TABLE `courses`
+  ADD PRIMARY KEY (`crn`);
+
+--
+-- Indexes for table `grades`
+--
+ALTER TABLE `grades`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `crn` (`crn`),
+  ADD KEY `rin` (`rin`);
+
+--
+-- Indexes for table `students`
+--
+ALTER TABLE `students`
+  ADD PRIMARY KEY (`rin`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `grades`
+--
+ALTER TABLE `grades`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `grades`
+--
+ALTER TABLE `grades`
+  ADD CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`crn`) REFERENCES `courses` (`crn`),
+  ADD CONSTRAINT `grades_ibfk_2` FOREIGN KEY (`rin`) REFERENCES `students` (`rin`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
